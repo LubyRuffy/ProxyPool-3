@@ -39,16 +39,17 @@ func GetProxyDataList(query *goquery.Selection) ([]PoolData) {
 		}
 		data := PoolData{}
 		selection.Find("td").Each(func(index int, s *goquery.Selection) {
+			text := []byte(s.Text())
+			text, _ = GbkToUtf8(text)
 			switch index {
 			case 0:
 				data.Ip = s.Text()
 			case 1:
 				data.Port = s.Text()
 			case 2:
-				data.Place = s.Text()
+				data.Place = string(text)
 			case 3:
-				data.ProxyType = s.Text()
-
+				data.ProxyType = string(text)
 			}
 		})
 		list = append(list, data)
