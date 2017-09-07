@@ -27,3 +27,12 @@ func TestAddProxy(t *testing.T) {
 		AddProxy(v)
 	}
 }
+
+func TestGetProxy(t *testing.T) {
+	m := map[string]string{"place": "印度尼西亚"}
+	data := GetProxy("ProxyPool", "ProxyPool", m)
+	for k, v := range data {
+		fmt.Println(k, v)
+	}
+
+}
