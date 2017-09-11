@@ -1,10 +1,11 @@
 package ProxyPool
 
 type PoolData struct {
-	Ip         string
-	Port       string
-	Place      string
-	ProxyType  string
+	Ip         []byte
+	Port       []byte
+	Place      []byte
+	ProxyType  []byte
 	CreateTime int64
-	Forbidden  []string
+	UpdateTime int64
+	HttpType   int8
 }

@@ -1,10 +1,13 @@
-package ProxyPool
+package crawler
 
 import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/labstack/gommon/log"
 	"net/http"
 	"strconv"
+	"github.com/huanyusun/ProxyPool"
+	"github.com/huanyusun/ProxyPool/common"
+	"bytes"
 )
 
 var mainUrl string = "http://www.66ip.cn/"
@@ -31,28 +34,35 @@ func SpliceUrl(i int) string {
 }
 
 //获取IP数据切片
-func GetProxyDataList(query *goquery.Selection) ([]PoolData) {
-	list := make([]PoolData, 0, 10)
+func GetProxyDataList(query *goquery.Selection) ([]ProxyPool.PoolData, []string) {
+	list := make([]ProxyPool.PoolData, 0, 10)
+	ipList := make([]string, 0, 10)
 	query.Find("#main").Find("tr").Each(func(i int, selection *goquery.Selection) {
 		if i == 0 {
 			return
 		}
-		data := PoolData{}
+		data := ProxyPool.PoolData{}
 		selection.Find("td").Each(func(index int, s *goquery.Selection) {
 			text := []byte(s.Text())
-			text, _ = GbkToUtf8(text)
+			text, _ = common.GbkToUtf8(text)
 			switch index {
 			case 0:
-				data.Ip = s.Text()
+				data.Ip = []byte(s.Text())
 			case 1:
-				data.Port = s.Text()
+				data.Port = []byte(s.Text())
 			case 2:
-				data.Place = string(text)
+				data.Place = []byte(s.Text())
 			case 3:
-				data.ProxyType = string(text)
+				data.ProxyType = []byte(s.Text())
 			}
 		})
+		data.HttpType = 1
+		buffer := bytes.Buffer{}
+		buffer.Write(data.Ip)
+		buffer.WriteString(":")
+		buffer.Write(data.Port)
 		list = append(list, data)
+		ipList = append(ipList, buffer.String())
 	})
-	return list
+	return list, ipList
 }

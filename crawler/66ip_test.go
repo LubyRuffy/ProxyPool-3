@@ -1,4 +1,4 @@
-package ProxyPool
+package crawler
 
 import (
 	"testing"
