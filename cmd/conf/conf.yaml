@@ -1,12 +1,12 @@
-source:
+source: #抓取数据源
   ["66ip"]
-web:
-  open: true
-  port: 8080
-  https: false
-checkList:
+web: #http相关
+  open: true #是否开启web接口
+  port: 8080 #监听端口
+  https: false #是否启用https
+checkList: #用于检测代理的网站列表
   ["http://baidu.com","http://weibo.com"]
-database:
+database: #数据库相关
   dbType: "mongodb"
   host: localhost
   port: 27017
@@ -14,5 +14,5 @@ database:
   user: mars
   password: test123
   dbName: proxyPool
-location:
+location: #运行的时区
     Asia/Shanghai

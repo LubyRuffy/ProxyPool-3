@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"github.com/huanyusun/ProxyPool"
 	"github.com/huanyusun/ProxyPool/common"
-	"bytes"
 )
 
 var mainUrl string = "http://www.66ip.cn/"
@@ -34,9 +33,7 @@ func SpliceUrl(i int) string {
 }
 
 //获取IP数据切片
-func GetProxyDataList(query *goquery.Selection) ([]ProxyPool.PoolData, []string) {
-	list := make([]ProxyPool.PoolData, 0, 10)
-	ipList := make([]string, 0, 10)
+func GetProxyDataList(query *goquery.Selection) (list []ProxyPool.PoolData) {
 	query.Find("#main").Find("tr").Each(func(i int, selection *goquery.Selection) {
 		if i == 0 {
 			return
@@ -47,22 +44,23 @@ func GetProxyDataList(query *goquery.Selection) ([]ProxyPool.PoolData, []string)
 			text, _ = common.GbkToUtf8(text)
 			switch index {
 			case 0:
-				data.Ip = []byte(s.Text())
+				data.Ip = s.Text()
 			case 1:
-				data.Port = []byte(s.Text())
+				data.Port = s.Text()
 			case 2:
-				data.Place = []byte(s.Text())
+				t, _ := common.GbkToUtf8([]byte(s.Text()))
+				data.Place = string(t)
 			case 3:
-				data.ProxyType = []byte(s.Text())
+				if s.Text() == "高匿代理" {
+					data.ProxyType = true
+				} else {
+					data.ProxyType = false
+				}
 			}
 		})
-		data.HttpType = 1
-		buffer := bytes.Buffer{}
-		buffer.Write(data.Ip)
-		buffer.WriteString(":")
-		buffer.Write(data.Port)
+		data.HttpType = true
+		data.AreaType = common.CheckArea(data.Place)
 		list = append(list, data)
-		ipList = append(ipList, buffer.String())
 	})
-	return list, ipList
+	return list
 }

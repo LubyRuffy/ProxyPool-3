@@ -89,9 +89,5 @@ func GetTimeNow() string {
 }
 
 func GetProxysName() string {
-	return "ProxyPool"
-}
-
-func GetExistsName() string {
-	return "OverIps"
+	return "ProxyList"
 }

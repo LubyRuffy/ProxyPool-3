@@ -3,6 +3,7 @@ package database
 import (
 	"gopkg.in/mgo.v2"
 	"github.com/huanyusun/ProxyPool"
+	"gopkg.in/mgo.v2/bson"
 )
 
 const url = "127.0.0.1:27017"
@@ -39,4 +40,13 @@ func CheckDataRepeat(ipList []string, collection *mgo.Collection) []string {
 	ips := make([]string, 0, 10)
 	collection.Find(ipList).All(&ips)
 	return ips
+}
+
+func CheckDoucumentExist(c *mgo.Collection, m bson.M) bool {
+	s := ProxyPool.PoolData{}
+	c.Find(m).One(s)
+	if s.Ip != "" {
+		return true
+	}
+	return false
 }
