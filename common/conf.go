@@ -9,11 +9,12 @@ import (
 )
 
 type Conf struct {
-	Source   []string  `yaml:"source"`    //爬取数据源
-	Web      WebServer `yaml:"web"`       //web服务 相关配置
-	Check    []string  `yaml:"checkList"` //IP检测网址
-	Db       Db        `yaml:"database"`  //数据库相关信息
-	Location string    `yaml:"location"`  //时区
+	Source    []string  `yaml:"source"`    //爬取数据源
+	Web       WebServer `yaml:"web"`       //web服务 相关配置
+	CheckList CheckList `yaml:"checkList"` //IP检测网址
+	Db        Db        `yaml:"database"`  //数据库相关信息
+	Location  string    `yaml:"location"`  //时区
+	GapsTime  int       `yaml:"gaps"`      //运行间隔时间
 }
 
 type WebServer struct {
@@ -34,6 +35,11 @@ type Db struct {
 	DbName   string `yaml:"dbName"`   //数据库名
 }
 
+type CheckList struct {
+	MainLand []string `yaml:"MainLand"` //大陆代理检测网址
+	Others   []string `yaml:"Others"`   //其他地区检测网址
+}
+
 var c Conf
 var location *time.Location
 
@@ -45,7 +51,7 @@ func getConfFile() string {
 }
 
 //读取配置
-func (c *Conf) getConf() *Conf {
+func (c *Conf) getConf() {
 	file, err := ioutil.ReadFile(getConfFile())
 	if err != nil {
 		log.SetFlags(log.Llongfile | log.Lshortfile)
@@ -53,13 +59,12 @@ func (c *Conf) getConf() *Conf {
 		os.Exit(2)
 	}
 
-	err = yaml.Unmarshal(file, c)
+	err = yaml.Unmarshal(file, &c)
 	if err != nil {
 		log.SetFlags(log.Llongfile | log.Lshortfile)
 		log.Fatal(err)
 		os.Exit(2)
 	}
-	return c
 }
 
 func init() {

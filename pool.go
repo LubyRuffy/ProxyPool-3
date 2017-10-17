@@ -1,6 +1,7 @@
 package ProxyPool
 
 type PoolData struct {
+	_ID        string
 	Ip         string
 	Port       string
 	Place      string

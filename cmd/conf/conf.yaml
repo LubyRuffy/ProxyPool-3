@@ -5,14 +5,17 @@ web: #http相关
   port: 8080 #监听端口
   https: false #是否启用https
 checkList: #用于检测代理的网站列表
-  ["http://baidu.com","http://weibo.com"]
+  Others: ["google.com","facebook.com"]
+  MainLand: ["baidu.com","weibo.com"]
 database: #数据库相关
-  dbType: "mongodb"
-  host: localhost
-  port: 27017
-  login: false
-  user: mars
-  password: test123
+  dbType: "mysql"
+  host: 10.64.3.40
+  port: 3306
+  login: true
+  user: root
+  password: s19890315
   dbName: proxyPool
 location: #运行的时区
     Asia/Shanghai
+gaps: 1 #间隔多久运行一次,单位秒
+

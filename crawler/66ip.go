@@ -58,7 +58,7 @@ func GetProxyDataList(query *goquery.Selection) (list []ProxyPool.PoolData) {
 				}
 			}
 		})
-		data.HttpType = true
+		data.HttpType = false
 		data.AreaType = common.CheckArea(data.Place)
 		list = append(list, data)
 	})

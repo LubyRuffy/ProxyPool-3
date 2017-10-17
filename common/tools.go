@@ -5,7 +5,10 @@ import (
 	"fmt"
 )
 
-var re *regexp.Regexp
+var (
+	re *regexp.Regexp
+)
+
 //区分大陆地址
 func CheckArea(s string) bool {
 	return re.MatchString(s)
@@ -18,4 +21,8 @@ func init() {
 		fmt.Println("确定代理区域正则有误")
 	}
 
+}
+
+func TimeFormat() string {
+	return "2006-01-02 15:04:05"
 }
